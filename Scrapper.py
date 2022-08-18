@@ -4,7 +4,8 @@ import smtplib
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-import pandas as pd
+# import pandas as pd
+import json
 
 YOUTUBE_TRENDING_URL = 'https://www.youtube.com/feed/trending/'
 
@@ -30,21 +31,14 @@ def get_videos(driver):
     return videos
 
 
-def send_email():
+def send_email(body):
 
     try:
-        # server = smtplib.SMTP('smtp.gmail.com', 587)
-        # server.ehlo()
-        # server.starttls()
-        # server_ssl = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        # server_ssl.ehlo()
-
         email_sender = 'gkerry200@gmail.com'
         email_password = 'shtwihosbkfmshll'
         email_receiver = 'gkerry200@gmail.com'
 
-        subject = 'Check out new ticket'
-        body = """ I have just sent my first ticket!"""
+        subject = 'YouTube Top Ten Trending Videos '
 
         em = EmailMessage()
         em['From'] = email_sender
@@ -59,18 +53,6 @@ def send_email():
             smtp.login(email_sender, email_password)
             print('Sending Email...')
             smtp.sendmail(email_sender, email_receiver, em.as_string())
-
-        # SENDER_EMAIL = 'gkerry200@gmail.com'
-        # RECEIVER_EMAIL = 'gkerry200@gmail.com'
-        # subject = 'Test Message from VS CODE'
-        # body = 'Hey, test message from VS Code'
-
-        # email_text = f"""\
-        # from: {SENDER_EMAIL}
-        # To: {RECEIVER_EMAIL}
-        # Subject: {subject}
-        # {body}
-        # """
     except:
         print('Something went wrong...')
 
@@ -99,24 +81,26 @@ def parse_video(video):
 
 if __name__ == "__main__":
     print('Creating Driver')
-    # driver = getDriver()
+    driver = getDriver()
 
-    # print('Fetching the page')
-    # videos = get_videos(driver)
+    print('Fetching the page')
+    videos = get_videos(driver)
 
-    # # Printout number of videos found
-    # print(f'Found {len(videos)} videos')
+    # Printout number of videos found
+    print(f'Found {len(videos)} videos')
 
-    # print('Parsing top 10 videos')
-    # videos_data = [parse_video(video) for video in videos[:10]]
-    # print(videos_data)
-    # print('Save the data to csv')
+    print('Parsing top 10 videos')
+    videos_data = [parse_video(video) for video in videos[:10]]
+    print(videos_data)
+    print('Save the data to csv')
     # videos_df = pd.DataFrame(videos_data)
     # print(videos_df)
     # videos_df.to_csv('trending.csv', index=None)
-    print('Send an email with the results')
-    send_email()
 
+    print('Send an email with the results')
+    body = json.dumps(videos_data, indent=2)
+    send_email(body)
+    print('Finished!')
     # # calling the first video
     # video = videos[0]
 
