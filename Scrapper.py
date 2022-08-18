@@ -28,6 +28,10 @@ def get_videos(driver):
     return videos
 
 
+def send_email():
+    pass
+
+
 def parse_video(video):
     # parse out title, url, thumbnail_url, channel, description
     title_tag = video.find_element(By.ID, 'video-title')
@@ -52,21 +56,23 @@ def parse_video(video):
 
 if __name__ == "__main__":
     print('Creating Driver')
-    driver = getDriver()
+    # driver = getDriver()
 
-    print('Fetching the page')
-    videos = get_videos(driver)
+    # print('Fetching the page')
+    # videos = get_videos(driver)
 
-    # Printout number of videos found
-    print(f'Found {len(videos)} videos')
+    # # Printout number of videos found
+    # print(f'Found {len(videos)} videos')
 
-    print('Parsing top 10 videos')
-    videos_data = [parse_video(video) for video in videos[:10]]
-    print(videos_data)
-    print('Save the data to csv')
-    videos_df = pd.DataFrame(videos_data)
-    print(videos_df)
-    videos_df.to_csv('trending.csv', index=None)
+    # print('Parsing top 10 videos')
+    # videos_data = [parse_video(video) for video in videos[:10]]
+    # print(videos_data)
+    # print('Save the data to csv')
+    # videos_df = pd.DataFrame(videos_data)
+    # print(videos_df)
+    # videos_df.to_csv('trending.csv', index=None)
+    print('Send an email with the results')
+    send_email()
 
     # # calling the first video
     # video = videos[0]
