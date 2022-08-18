@@ -66,7 +66,7 @@ if __name__ == "__main__":
     print('Save the data to csv')
     videos_df = pd.DataFrame(videos_data)
     print(videos_df)
-    videos_df.to_csv('trending.csv')
+    videos_df.to_csv('trending.csv', index=None)
 
     # # calling the first video
     # video = videos[0]
