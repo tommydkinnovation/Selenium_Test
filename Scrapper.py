@@ -1,4 +1,6 @@
-
+from email.message import EmailMessage
+import ssl
+import smtplib
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -29,7 +31,48 @@ def get_videos(driver):
 
 
 def send_email():
-    pass
+
+    try:
+        # server = smtplib.SMTP('smtp.gmail.com', 587)
+        # server.ehlo()
+        # server.starttls()
+        # server_ssl = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        # server_ssl.ehlo()
+
+        email_sender = 'gkerry200@gmail.com'
+        email_password = 'shtwihosbkfmshll'
+        email_receiver = 'gkerry200@gmail.com'
+
+        subject = 'Check out new ticket'
+        body = """ I have just sent my first ticket!"""
+
+        em = EmailMessage()
+        em['From'] = email_sender
+        em['To'] = email_receiver
+        em['Subject'] = subject
+        em.set_content(body)
+
+        context = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+            print('Loging in...')
+            smtp.login(email_sender, email_password)
+            print('Sending Email...')
+            smtp.sendmail(email_sender, email_receiver, em.as_string())
+
+        # SENDER_EMAIL = 'gkerry200@gmail.com'
+        # RECEIVER_EMAIL = 'gkerry200@gmail.com'
+        # subject = 'Test Message from VS CODE'
+        # body = 'Hey, test message from VS Code'
+
+        # email_text = f"""\
+        # from: {SENDER_EMAIL}
+        # To: {RECEIVER_EMAIL}
+        # Subject: {subject}
+        # {body}
+        # """
+    except:
+        print('Something went wrong...')
 
 
 def parse_video(video):
